@@ -1,0 +1,34 @@
+{
+  "name": "operating-cockpit",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.1.3",
+    "dayjs": "^1.11.6",
+    "echarts": "^5.3.3",
+    "element-plus": "^2.2.18",
+    "js-cookie": "^3.0.1",
+    "less": "^4.1.3",
+    "less-loader": "^11.0.0",
+    "loadsh": "^0.0.4",
+    "pinia": "^2.0.23",
+    "vue": "^3.2.37",
+    "vue-router": "^4.1.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.1.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.1.0",
+    "vue-tsc": "^0.40.4"
+  },
+  "main": "index.js",
+  "repository": "git@github.com:Haymitch1992/operating-cockpit.git",
+  "author": "zhiwei.wang <wangzhiwei3306@163.com>",
+  "license": "MIT"
+}

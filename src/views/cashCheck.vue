@@ -1,0 +1,362 @@
+<!-- 资源利用驾驶舱 -->
+<script setup lang="ts">
+import { reactive, ref, onMounted } from 'vue';
+import top from '../components/top.vue';
+import barItem from '../components/barItem2.vue';
+import barItem13 from '../components/barItem13.vue';
+import barItem11 from '../components/barItem11.vue';
+import barItem5 from '../components/barItem5.vue';
+import barItemSlot from '../components/barItem-slot.vue';
+import cashBar from '../components/cash-bar.vue';
+import kaixingBar from '../components/kaixing-bar.vue';
+import cashBar2 from '../components/cash-bar-2.vue';
+import {
+  postLineSectionData,
+  postLineTimeSerialData,
+  postTransitNetworkData,
+  postTrainOperationLineIndex,
+} from '../api/information.js';
+
+import instrumentPanelVue from '../components/instrument-panel.vue';
+import mapItem from '../components/map.vue';
+// 渲染数据
+const setData = (obj: Array<object>) => {
+  // 处置数据
+  pageData.yunli = {
+    up: {
+      x: [],
+      y1: [],
+      y2: [],
+      y3: [],
+    },
+    down: {
+      x: [],
+      y1: [],
+      y2: [],
+      y3: [],
+    },
+  };
+  obj.forEach((item) => {
+    pageData.yunli.up.x.push(item.name);
+    pageData.yunli.up.y1.push(item.data.maxSectionPF_LineUp);
+    pageData.yunli.up.y2.push(item.data.maxSectionTrafficPower_LineUp);
+    pageData.yunli.up.y3.push(
+      (item.data.maxSectionLoadRate_LineUp * 100).toFixed(2)
+    );
+    pageData.yunli.down.x.push(item.name);
+    pageData.yunli.down.y1.push(item.data.maxSectionPF_LineDown);
+    pageData.yunli.down.y2.push(item.data.maxSectionTrafficPower_LineDown);
+    pageData.yunli.down.y3.push(
+      (item.data.maxSectionLoadRate_LineDown * 100).toFixed(2)
+    );
+  });
+};
+
+const setData2 = (obj: Array<object>) => {
+  // 处置数据
+  pageData.duanmian = {
+    up: {
+      x: [],
+      y1: [],
+      y2: [],
+      y3: [],
+    },
+    down: {
+      x: [],
+      y1: [],
+      y2: [],
+      y3: [],
+    },
+  };
+  obj.forEach((item) => {
+    pageData.duanmian.up.x.push(item.name);
+    pageData.duanmian.up.y1.push(item.data.sectionPF_LineUp);
+    pageData.duanmian.up.y2.push(item.data.sectionTrafficPower_LineUp);
+    pageData.duanmian.up.y3.push(
+      (item.data.sectionLoadRate_LineUp * 100).toFixed(2)
+    );
+    pageData.duanmian.down.x.push(item.name);
+    pageData.duanmian.down.y1.push(item.data.sectionPF_LineDown);
+    pageData.duanmian.down.y2.push(item.data.sectionTrafficPower_LineDown);
+    pageData.duanmian.down.y3.push(
+      (item.data.sectionLoadRate_LineDown * 100).toFixed(2)
+    );
+  });
+};
+
+const postLineTimeSerialDataFn = () => {
+  postLineTimeSerialData({
+    date: pageData.currentDate,
+    data: pageData.currentData,
+  }).then((res) => {
+    setData(res.data);
+  });
+};
+
+const postTransitNetworkDataFn = () => {
+  postTransitNetworkData({
+    date: pageData.currentDate,
+  }).then((res) => {
+    pageData.keliu = res.data;
+  });
+};
+
+const postLineSectionDataFn = () => {
+  postLineSectionData({
+    date: pageData.currentDate,
+    time: pageData.currentTime,
+    data: pageData.currentData,
+  }).then((res) => {
+    setData2(res.data);
+    // console.log(res.data, 'postLineSectionDataFn');
+  });
+};
+
+const postTrainOperationLineIndexFn = () => {
+  // let str = pageData.currentDate.replace('-', '', 'g');
+  postTrainOperationLineIndex({
+    status: 0,
+    message: '资源利用页面数据',
+    data: 'resourceutility',
+    date: '20221020',
+  }).then((res) => {
+    operationData(res.data.data);
+  });
+};
+
+// 处理数据
+const operationData = (arr: any) => {
+  // 重置数据
+  pageData.itemData1 = [];
+  // pageData.itemData = arr[0].data;
+  pageData.options = [];
+  // 选择线路数据
+  const arrTotal: any = arr.slice(1, -1);
+  arrTotal.forEach((item: any) => {
+    item.data[0].xlabel = item.lineName;
+    pageData.itemData1.push(item.data[0]);
+  });
+};
+
+onMounted(() => {
+  postLineSectionDataFn();
+  postTransitNetworkDataFn();
+  postLineTimeSerialDataFn();
+  postTrainOperationLineIndexFn();
+});
+
+const pageData: PageData = reactive({
+  title: '列车兑现率驾驶舱',
+  status: '良',
+  options: [],
+  itemData1: [],
+  itemData: [
+    {
+      indexName: '全网列车兑现率',
+      rank: '良',
+      ratio: 1,
+      transferValue: 7,
+      value: 0.31898001019726985,
+      xlabel: '1号线',
+    },
+  ],
+  linkData: [
+    {
+      label: '列车运行驾驶舱',
+      link: '/',
+    },
+    {
+      label: '运营影响驾驶舱',
+      link: '/operation',
+    },
+    {
+      label: '列车兑现率驾驶舱',
+      link: '/transfer',
+    },
+  ],
+  keliu: [
+    {
+      name: '',
+      data: {
+        maxSectionPF: 0,
+        maxSectionLoadRate: 0,
+      },
+    },
+  ],
+  yunli: {
+    up: {
+      x: [],
+      y1: [],
+      y2: [],
+      y3: [],
+    },
+    down: {
+      x: [],
+      y1: [],
+      y2: [],
+      y3: [],
+    },
+  },
+  duanmian: {
+    up: {
+      x: [],
+      y1: [],
+      y2: [],
+      y3: [],
+    },
+    down: {
+      x: [],
+      y1: [],
+      y2: [],
+      y3: [],
+    },
+  },
+  currentDate: '2022-01-23',
+  currentTime: '8:00:00',
+  currentData: '7号线',
+});
+
+interface PageData {
+  title: string;
+  status: string;
+  itemData1: Array<object>;
+  itemData: Array<object>;
+  linkData: Array<object>;
+  options: Array<object>;
+  keliu: Array<object>;
+  yunli: any;
+  duanmian: any;
+  currentDate: string;
+  currentTime: string;
+  currentData: string;
+}
+
+const changeCurrentTime = (val: string) => {
+  pageData.currentTime = val;
+  postLineSectionDataFn();
+};
+const changeCurrentData = (val: string) => {
+  pageData.currentData = val;
+  postLineTimeSerialDataFn();
+  postLineSectionDataFn();
+};
+const changeCurrentDate = (val: string) => {
+  pageData.currentDate = val;
+  postLineSectionDataFn();
+  postTransitNetworkDataFn();
+  postLineTimeSerialDataFn();
+  postTrainOperationLineIndexFn();
+};
+</script>
+
+<template>
+  <div class="container">
+    <top :topObj="pageData" :link="pageData.linkData"></top>
+    <div class="content-box">
+      <!-- 综合信息栏 -->
+
+      <div class="card-container">
+        <div class="left-box">
+          <div class="card-box">
+            <bar-item
+              title="列车兑现率"
+              :obj="pageData.itemData[0]"
+              :yObj="pageData.itemData1"
+              @changeDate="changeCurrentDate"
+            ></bar-item>
+          </div>
+          <div class="card-box">
+            <bar-item-slot title="开行总列次">
+              <kaixing-bar></kaixing-bar>
+            </bar-item-slot>
+          </div>
+        </div>
+        <div class="middle-box">
+          <div class="card-box middle-box-2">
+            <h2>北京地铁换乘系数图</h2>
+            <map-item :options="pageData.options"></map-item>
+          </div>
+        </div>
+        <div class="right-box">
+          <div class="card-box">
+            <bar-item-slot title="列车兑现情况">
+              <cash-bar></cash-bar>
+            </bar-item-slot>
+          </div>
+          <div class="card-box">
+            <bar-item-slot title="临客列数">
+              <div class="btn-line">
+                <el-button size="small" class="bar-btn">上行</el-button>
+                <el-button size="small" class="bar-btn">下行</el-button>
+                <el-button size="small" class="bar-btn">总和</el-button>
+              </div>
+              <cash-bar-2></cash-bar-2>
+            </bar-item-slot>
+          </div>
+        </div>
+      </div>
+      <!-- 列车运行指标组成及得分 -->
+      <div class="card-container"></div>
+    </div>
+  </div>
+</template>
+
+<style lang="less" scoped>
+.btn-line {
+  padding-right: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: right;
+  .bar-btn {
+    background-color: #09204e;
+    color: #3ae3ff;
+    border: 1px solid #3ae3ff;
+  }
+  .bar-btn:hover {
+    background-color: #18567f;
+  }
+}
+
+.card-container {
+  display: flex;
+  padding: 0 15px;
+  box-sizing: border-box;
+  .left-box {
+    flex: 3;
+  }
+  .right-box {
+    flex: 3;
+  }
+  .middle-box {
+    flex: 5;
+  }
+
+  .card-box {
+    border: 1px solid #3ae3ff;
+    border-radius: 4px;
+    margin: 0 5px 10px;
+    color: #fff;
+    height: 470px;
+    background-color: #09204e;
+    font-size: 14px;
+    h2 {
+      padding: 0 0 0 20px;
+      margin: 0;
+      color: #fff;
+      font-size: 22px;
+      line-height: 44px;
+      border-bottom: 1px solid #3ae3ff;
+      background-color: #09204e;
+      // font-family: Arial, Helvetica, sans-serif;
+    }
+  }
+  .middle-box-1 {
+    height: 248px;
+  }
+  .middle-box-2 {
+    height: 952px;
+    overflow: hidden;
+    background-color: #01133b;
+  }
+}
+</style>
