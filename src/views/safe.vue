@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import { useRouter } from 'vue-router';
 import { mainStore } from '../store/index';
 import mainItem from '../components/pageItem/main-item.vue';
-
+import linkItem from '../components/pageItem/link-item.vue';
 const store = mainStore();
 // 渲染数据
 onMounted(() => {
@@ -114,7 +114,7 @@ const pageData: any = reactive({
     xlabel: '1号线',
     targetKey: 'data2',
     unit: 'number',
-    unitCn:'件',
+    unitCn: '件',
     fixed: 1,
 
     data: [],
@@ -129,7 +129,7 @@ const pageData: any = reactive({
     xlabel: '1号线',
     targetKey: 'data3',
     unit: 'number',
-    unitCn:'件',
+    unitCn: '件',
     fixed: 1,
 
     data: [],
@@ -144,7 +144,7 @@ const pageData: any = reactive({
     xlabel: '1号线',
     targetKey: 'data4',
     unit: 'number',
-    unitCn:'件',
+    unitCn: '件',
     fixed: 1,
     data: [],
     original: [],
@@ -158,7 +158,7 @@ const pageData: any = reactive({
     xlabel: '1号线',
     targetKey: 'data1',
     unit: 'number',
-    unitCn:'件',
+    unitCn: '件',
     fixed: 1,
     data: [],
     original: [],
@@ -204,10 +204,22 @@ const changeSort = (obj: any) => {
       break;
   }
 };
+
+const linkList = [
+  {
+    name: '综合运营指数',
+    link: '/homeOperation',
+  },
+  {
+    name: '安全指数',
+    link: '/safe',
+  },
+];
 </script>
 
 <template>
   <div class="page-container">
+    <linkItem :obj="linkList"></linkItem>
     <div class="content-box">
       <!-- 综合信息栏 -->
       <div class="card-container">
@@ -291,7 +303,7 @@ const changeSort = (obj: any) => {
     border-radius: 4px;
     margin: 0 5px 10px;
     color: #fff;
-    height: 454px;
+    height: 444px;
     background-color: #20232f;
     font-size: 14px;
     h2 {
@@ -306,12 +318,12 @@ const changeSort = (obj: any) => {
     }
   }
   .middle-box-2 {
-    height: 920px;
+    height: 900px;
     position: relative;
   }
 }
 .page-container {
-  padding: 20px 5px 15px;
+  padding: 20px 5px 10px;
   width: 100%;
   box-sizing: border-box;
 }

@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { useRouter } from 'vue-router';
 import { mainStore } from '../store/index';
 import mainItem from '../components/pageItem/main-item.vue';
+import linkItem from '../components/pageItem/link-item.vue';
 const store = mainStore();
 // 渲染数据
 onMounted(() => {
@@ -314,10 +315,21 @@ const setIconColor = (value: string) => {
   });
   return returnColor;
 };
+const linkList = [
+  {
+    name: '综合运营指数',
+    link: '/homeOperation',
+  },
+  {
+    name: '服务指数',
+    link: '/service',
+  },
+];
 </script>
 
 <template>
   <div class="page-container">
+    <linkItem :obj="linkList"></linkItem>
     <div class="content-box">
       <!-- 综合信息栏 -->
       <div class="card-container">
@@ -384,12 +396,12 @@ const setIconColor = (value: string) => {
                 v-model="pageData.item2ShowNum"
                 placeholder="请选择"
               >
+                <el-option :key="1" label="超载区间占比" :value="3"></el-option>
                 <el-option
-                  :key="1"
-                  label="超载区间占比"
-                  :value="3"
+                  :key="2"
+                  label="乘客平均出行速度"
+                  :value="4"
                 ></el-option>
-                <el-option :key="2" label="乘客平均出行速度" :value="4"></el-option>
               </el-select>
             </h2>
             <bar-item
@@ -402,7 +414,6 @@ const setIconColor = (value: string) => {
               :obj="pageData.data4"
               @changeSort="changeSort"
             ></bar-item>
-
           </div>
         </div>
         <div class="middle-box">
@@ -445,11 +456,7 @@ const setIconColor = (value: string) => {
                 v-model="pageData.item3ShowNum"
                 placeholder="请选择"
               >
-                <el-option
-                  :key="1"
-                  label="平均候车时长"
-                  :value="5"
-                ></el-option>
+                <el-option :key="1" label="平均候车时长" :value="5"></el-option>
                 <el-option :key="2" label="平均滞留次数" :value="6"></el-option>
               </el-select>
             </h2>
@@ -485,11 +492,7 @@ const setIconColor = (value: string) => {
                 v-model="pageData.item4ShowNum"
                 placeholder="请选择"
               >
-                <el-option
-                  :key="1"
-                  label="客运强度"
-                  :value="7"
-                ></el-option>
+                <el-option :key="1" label="客运强度" :value="7"></el-option>
                 <el-option :key="2" label="乘客投诉率" :value="8"></el-option>
               </el-select>
             </h2>
@@ -555,7 +558,7 @@ const setIconColor = (value: string) => {
     border-radius: 4px;
     margin: 0 5px 10px;
     color: #fff;
-    height: 454px;
+    height: 444px;
     background-color: #20232f;
     font-size: 14px;
     h2 {
@@ -583,12 +586,12 @@ const setIconColor = (value: string) => {
     }
   }
   .middle-box-2 {
-    height: 920px;
+    height: 900px;
     position: relative;
   }
 }
 .page-container {
-  padding: 20px 5px 15px;
+  padding: 20px 5px 10px;
   width: 100%;
   box-sizing: border-box;
 }

@@ -90,7 +90,7 @@ const initEcharts = () => {
         formatter: '{value}' + props.yObj.unitCn,
       },
       min: props.yObj.min ? props.yObj.min : null,
-      max:props.yObj.max?props.yObj.max:null
+      max: props.yObj.max ? props.yObj.max : null,
     },
     yAxis: {
       type: 'category',
@@ -147,7 +147,7 @@ onMounted(() => {
 <style lang="less" scoped>
 .panel {
   width: 100%;
-  height: 280px;
+  height: 270px;
   display: block;
   margin: 0 auto;
   text-align: center;

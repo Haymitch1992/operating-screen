@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { useRouter } from 'vue-router';
 import { mainStore } from '../store/index';
 import mainItem from '../components/pageItem/main-item.vue';
+import linkItem from '../components/pageItem/link-item.vue';
 const store = mainStore();
 // 渲染数据
 onMounted(() => {
@@ -167,7 +168,7 @@ const pageData: any = reactive({
     targetKey: 'data3',
     unit: 'number',
     unitCn: '次/万车公里',
-  
+
     fixed: 2,
     data: [],
     original: [],
@@ -267,10 +268,21 @@ const setIconColor = (value: string) => {
   });
   return returnColor;
 };
+const linkList = [
+  {
+    name: '综合运营指数',
+    link: '/homeOperation',
+  },
+  {
+    name: '设备指数',
+    link: '/equipment',
+  },
+];
 </script>
 
 <template>
   <div class="page-container">
+    <linkItem :obj="linkList"></linkItem>
     <div class="content-box">
       <!-- 综合信息栏 -->
       <div class="card-container">
@@ -439,7 +451,7 @@ const setIconColor = (value: string) => {
     border-radius: 4px;
     margin: 0 5px 10px;
     color: #fff;
-    height: 454px;
+    height: 444px;
     background-color: #20232f;
     font-size: 14px;
     h2 {
@@ -467,12 +479,12 @@ const setIconColor = (value: string) => {
     }
   }
   .middle-box-2 {
-    height: 920px;
+    height: 900px;
     position: relative;
   }
 }
 .page-container {
-  padding: 20px 5px 15px;
+  padding: 20px 5px 10px;
   width: 100%;
   box-sizing: border-box;
 }

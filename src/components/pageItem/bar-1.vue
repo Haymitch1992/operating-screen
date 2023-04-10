@@ -88,7 +88,6 @@ const initEcharts = () => {
       axisLabel: {
         formatter: '{value} 分',
       },
-  
     },
 
     grid: {
@@ -144,7 +143,7 @@ onMounted(() => {
 <style lang="less" scoped>
 .panel {
   width: 100%;
-  height: 380px;
+  height: 370px;
   display: block;
   margin: 0 auto;
   text-align: center;

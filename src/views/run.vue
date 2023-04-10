@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { useRouter } from 'vue-router';
 import { mainStore } from '../store/index';
 import mainItem from '../components/pageItem/main-item.vue';
+import linkItem from '../components/pageItem/link-item.vue';
 const store = mainStore();
 // 渲染数据
 onMounted(() => {
@@ -113,6 +114,7 @@ const pageData: any = reactive({
     value: 0.31898001019726985,
     xlabel: '1号线',
     targetKey: 'data1',
+    linkPage: '/duixian',
     data: [],
     unit: '%',
     unitCn: '%',
@@ -208,10 +210,21 @@ const changeSort = (obj: any) => {
       break;
   }
 };
+const linkList = [
+  {
+    name: '综合运营指数',
+    link: '/homeOperation',
+  },
+  {
+    name: '运行指数',
+    link: '/run',
+  },
+];
 </script>
 
 <template>
   <div class="page-container">
+    <linkItem :obj="linkList"></linkItem>
     <div class="content-box">
       <!-- 综合信息栏 -->
       <div class="card-container">
@@ -295,7 +308,7 @@ const changeSort = (obj: any) => {
     border-radius: 4px;
     margin: 0 5px 10px;
     color: #fff;
-    height: 454px;
+    height: 444px;
     background-color: #20232f;
     font-size: 14px;
     h2 {
@@ -310,12 +323,12 @@ const changeSort = (obj: any) => {
     }
   }
   .middle-box-2 {
-    height: 920px;
+    height: 900px;
     position: relative;
   }
 }
 .page-container {
-  padding: 20px 5px 15px;
+  padding: 20px 5px 10px;
   width: 100%;
   box-sizing: border-box;
 }

@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted, watch, getCurrentInstance } from 'vue';
 import instrumentPanelVue from './instrument-panel-sm.vue';
-
+import { useRouter } from 'vue-router';
 import * as echarts from 'echarts';
 
 import bar from './bar.vue';
@@ -60,6 +60,7 @@ watch(
   }
 );
 
+const router = useRouter();
 const colorObj =
   getCurrentInstance()?.appContext.config.globalProperties.$colorObj;
 const setIconColor = (value: string) => {
@@ -71,12 +72,19 @@ const setIconColor = (value: string) => {
   });
   return returnColor;
 };
+
+const handleSelect = (str: string) => {
+  router.push(str);
+};
 </script>
 
 <template>
   <div class="container">
     <!-- 仪表盘 -->
-    <h2>
+    <h2
+      @click="handleSelect(props.obj.linkPage)"
+      :class="props.obj.linkPage ? 'active' : ''"
+    >
       {{ props.obj.indexName }}
       <span
         class="icon"
@@ -126,6 +134,10 @@ h2 {
   font-size: 22px;
   line-height: 44px;
   border-bottom: 1px solid #6e7283;
+}
+.active {
+  text-decoration: underline;
+  cursor: pointer;
 }
 .btn-line {
   padding-right: 20px;

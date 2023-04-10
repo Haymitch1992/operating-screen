@@ -6,23 +6,54 @@ import barItem from '../components/pageItem/barItem.vue';
 import * as _ from 'lodash';
 import { useRouter } from 'vue-router';
 import { mainStore } from '../store/index';
-import mainItem from '../components/pageItem/main-item.vue';
+// 引入condition-item组件
+import conditionItem from '../components/cash/condition-item.vue';
+import conditionItem1 from '../components/cash/condition-item-2.vue';
+import conditionItem3 from '../components/cash/condition-item-3.vue';
+import linkItem from '../components/pageItem/link-item.vue';
 const store = mainStore();
 // 渲染数据
-onMounted(() => {});
+onMounted(() => {
+  buildData();
+});
 
 //
 
-const pageData: any = reactive({
-  pageMain: {
-    indexName: '运行指数',
+const buildData = () => {
+  let arr1: any = [];
+  let arr2: any = [];
+  let arr3: any = [];
+  let arr4: any = [];
+  let arr5: any = [];
+  let num = 0;
+  pageData.lineList.forEach((item: any) => {
+    arr1.push({
+      xlabel: item.label,
+      rank: '优',
+      ratio: 1,
+      transferValue: 9,
+      value: Math.random() * (1 - 0.999) + 0.999,
+    });
+
+    pageData.data1.data = arr1;
+    pageData.data1.original = arr1;
+  });
+};
+const pageData: PageData = reactive({
+  data1: {
+    indexName: '列车兑现率',
     rank: '优',
     ratio: 1,
-    value: 8.1,
-    transferValue: 10,
-    unit: 'number',
-    fixed: 1,
+    transferValue: 8.2,
+    value: 0.31898001019726985,
+    xlabel: '1号线',
+    targetKey: 'data1',
     data: [],
+    unit: '%',
+    unitCn: '%',
+    min: 98.9,
+    max: 100,
+    fixed: 2,
     original: [],
   },
   lineList: [
@@ -43,103 +74,56 @@ const pageData: any = reactive({
     { label: '房山线' },
     { label: '首都机场线' },
   ],
-  data1: {
-    indexName: '列车兑现率',
-    rank: '优',
-    ratio: 1,
-    transferValue: 8.2,
-    value: 0.31898001019726985,
-    xlabel: '1号线',
-    targetKey: 'data1',
-    data: [],
-    unit: '%',
-    unitCn: '%',
-    min: 98.9,
-    max: 100,
-    fixed: 2,
-    original: [],
-  },
-  data2: {
-    indexName: '列车正点率',
-    rank: '优',
-    ratio: 1,
-    transferValue: 8.5,
-    value: 0.31898001019726985,
-    xlabel: '1号线',
-    targetKey: 'data2',
-    unit: '%',
-    unitCn: '%',
-    min: 98.9,
-    max: 100,
-    fixed: 2,
-    data: [],
-    original: [],
-  },
-  data3: {
-    indexName: '列车利用率',
-    rank: '优',
-    ratio: 1,
-    transferValue: 8.7,
-    value: 0.31898001019726985,
-    xlabel: '1号线',
-    targetKey: 'data3',
-    unit: '%',
-    unitCn: '%',
-    min: 60,
-    max: 100,
-    fixed: 1,
-    data: [],
-    original: [],
-  },
-  data4: {
-    indexName: '牵引单耗',
-    rank: '优',
-    ratio: 1,
-    transferValue: 8.6,
-    value: 0.31898001019726985,
-    xlabel: '1号线',
-    targetKey: 'data4',
-    unit: 'number',
-    unitCn: '度/车公里',
-    fixed: 1,
-    data: [],
-    original: [],
-  },
 });
 
 interface PageData {
-  lineList: any;
   data1: any;
-  data2: any;
-  data3: any;
-  data4: any;
+  lineList: any;
 }
 
 const router = useRouter();
 const handleSelect = () => {
   router.push('/homeOperation');
 };
+const linkList = [
+  {
+    name: '综合运营指数',
+    link: '/homeOperation',
+  },
+  {
+    name: '运行指数',
+    link: '/run',
+  },
+  {
+    name: '列车兑现率',
+    link: '/duixian',
+  },
+];
 </script>
 
 <template>
   <div class="page-container">
     <div class="content-box">
+      <linkItem :obj="linkList"></linkItem>
       <!-- 综合信息栏 -->
       <div class="card-container">
         <div class="left-box">
           <div class="card-box">
-            <h2>开行总列次</h2>
+            <bar-item :obj="pageData.data1"></bar-item>
           </div>
           <div class="card-box">
-            <h2>列车兑现情况历史数据今日数据</h2>
+            <h2>列车兑现情况</h2>
+            <condition-item></condition-item>
           </div>
         </div>
         <div class="right-box">
           <div class="card-box">
             <h2>开行总列次</h2>
+            <condition-item-3></condition-item-3>
           </div>
           <div class="card-box">
             <h2>临客列数</h2>
+            <condition-item-1></condition-item-1>
           </div>
         </div>
       </div>
@@ -184,7 +168,7 @@ const handleSelect = () => {
     border-radius: 4px;
     margin: 0 5px 10px;
     color: #fff;
-    height: 454px;
+    height: 444px;
     background-color: #20232f;
     font-size: 14px;
     h2 {
@@ -204,7 +188,7 @@ const handleSelect = () => {
   }
 }
 .page-container {
-  padding: 20px 5px 15px;
+  padding: 20px 5px 10px;
   width: 100%;
   box-sizing: border-box;
 }
