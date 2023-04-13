@@ -99,7 +99,7 @@ const handleSelect = (str: string) => {
         <div class="left">
           <!-- {{ props.obj }} -->
           <div class="left">
-            <instrumentPanelVue :obj="props.obj"></instrumentPanelVue>
+            <!-- <instrumentPanelVue :obj="props.obj"></instrumentPanelVue> -->
           </div>
           <!-- <p>全网平均满载率30</p> -->
           <div class="right">
@@ -189,7 +189,7 @@ h2 {
   position: relative;
   .left {
     flex: 1;
-    height: 120px;
+    height: 80px;
     p {
       padding: 0;
       margin: 0;
@@ -220,4 +220,3 @@ h2 {
   color: #6e7283;
 }
 </style>
-

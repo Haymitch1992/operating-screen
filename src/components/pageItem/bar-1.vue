@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { reactive, Ref, ref, onMounted, watch, getCurrentInstance } from 'vue';
 import * as echarts from 'echarts';
+import { mainStore } from '../../store/index';
+const store = mainStore();
 const COLORS = ['#ff0000', '#e89c00', '#00d08d', '#1868fe'];
 
 const props = defineProps({
@@ -26,6 +28,16 @@ watch(
   { deep: true }
 );
 
+watch(
+  () => store.currentSelectLineName,
+  (newValue, oldValue) => {
+    console.log(newValue, oldValue, '监听传递参数的变化');
+    setData();
+    initEcharts();
+  },
+  { deep: true }
+);
+
 const setData = () => {
   echartsData.xValue = [];
   echartsData.yValue = [];
@@ -41,7 +53,11 @@ const setData = () => {
     // arr.value.push(num);
     echartsData.xValue.push(item.xlabel);
     echartsData.yValue.push(num.toFixed(2));
-    echartsData.colorList.push(setIconColor(item.rank));
+    if (item.xlabel === store.currentSelectLineName) {
+      echartsData.colorList.push('#488e29');
+    } else {
+      echartsData.colorList.push(setIconColor(item.rank));
+    }
   });
 };
 
@@ -103,6 +119,10 @@ const initEcharts = () => {
         data: echartsData.yValue,
         type: 'bar',
         barWidth: 20,
+        stack: 'Ad',
+        emphasis: {
+          focus: 'series',
+        },
         itemStyle: {
           normal: {
             color: (item: any) => {
@@ -123,6 +143,11 @@ const initEcharts = () => {
     ],
   };
   option && myEcharts.setOption(option);
+  myEcharts.on('click', function (params: any) {
+    console.log(params);
+    // 修改store.setCurrentSelectLineName 的值 为当前点击的线路名称
+    store.currentSelectLineName = params.name;
+  });
 };
 
 const myChart: Ref<HTMLElement | any> = ref(null);
@@ -131,6 +156,8 @@ onMounted(() => {
   initEcharts();
   // echart 初始化 需要 原生 DOM 对象
 });
+
+// 使用echarts 给 myChart 绑定点击事件
 </script>
 
 <template>

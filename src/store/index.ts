@@ -10,6 +10,7 @@ export const mainStore = defineStore('main', {
     return {
       currentTime:'2023-03-21',
       count: 1,
+      currentSelectLineName:'1-八通线',
       phone: '13811559314',
       dialogStatus: false,
       showBuy: false,

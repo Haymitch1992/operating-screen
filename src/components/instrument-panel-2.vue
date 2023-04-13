@@ -57,7 +57,9 @@ const initEcharts = () => {
               y: '60%',
               value: '优',
               symbol: 'text',
-
+              label: {
+                fontSize: 20,
+              },
               itemStyle: {
                 color: 'transparent',
               },
@@ -67,7 +69,9 @@ const initEcharts = () => {
               y: '60%',
               value: '差',
               symbol: 'text',
-
+              label: {
+                fontSize: 20,
+              },
               itemStyle: {
                 color: 'transparent',
               },
@@ -77,6 +81,9 @@ const initEcharts = () => {
               y: '20%',
               value: '中',
               symbol: 'text',
+              label: {
+                fontSize: 20,
+              },
               itemStyle: {
                 color: 'transparent',
               },
@@ -84,6 +91,9 @@ const initEcharts = () => {
             {
               x: '75%',
               y: '20%',
+              label: {
+                fontSize: 20,
+              },
               value: '良',
               symbol: 'text',
               itemStyle: {
@@ -102,6 +112,7 @@ const initEcharts = () => {
         },
         axisTick: {
           distance: -42,
+
           length: 8,
           lineStyle: {
             color: '#fff',

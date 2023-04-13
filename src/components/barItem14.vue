@@ -26,8 +26,6 @@ const itemData = reactive({
   obj: props.yObj,
 });
 
-
-
 const handlechange = (val: string) => {
   console.log(val, '修改日期');
   emit('changeDate', val);
@@ -105,10 +103,10 @@ h2 {
   border: 1px solid #6e7283;
 }
 .bar-btn:hover {
-  background-color: #20232f;
+  background-color: #7598eb57;
 }
 .active {
-  background-color: #20232f;
+  background-color: #7598eb57;
 }
 .icon {
   width: 24px;

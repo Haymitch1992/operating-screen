@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { reactive, ref, onMounted } from 'vue';
 import top from '../components/top.vue';
-import barItem from '../components/pageItem/barItem.vue';
+import barItem from '../components/pageItem/barItem-2.vue';
 import * as _ from 'lodash';
 import { useRouter } from 'vue-router';
 import { mainStore } from '../store/index';
@@ -11,6 +11,7 @@ import conditionItem from '../components/cash/condition-item.vue';
 import conditionItem1 from '../components/cash/condition-item-2.vue';
 import conditionItem3 from '../components/cash/condition-item-3.vue';
 import linkItem from '../components/pageItem/link-item.vue';
+import instrumentPanelVue from '../components/instrument-panel-2.vue';
 const store = mainStore();
 // 渲染数据
 onMounted(() => {
@@ -39,7 +40,7 @@ const buildData = () => {
     pageData.data1.original = arr1;
   });
 };
-const pageData: PageData = reactive({
+const pageData: any = reactive({
   data1: {
     indexName: '列车兑现率',
     rank: '优',
@@ -99,6 +100,33 @@ const linkList = [
     link: '/duixian',
   },
 ];
+
+const changeSort = (obj: any) => {
+  // 改变排序方式
+  pageData[obj.targetKey].data = pageData[obj.targetKey].original;
+  switch (obj.sortName) {
+    case '名称正序':
+      _.reverse(pageData[obj.targetKey].data);
+      break;
+    case '名称倒序':
+      _.reverse(pageData[obj.targetKey].data);
+      break;
+    case '优到差':
+      pageData[obj.targetKey].data = _.orderBy(
+        pageData[obj.targetKey].data,
+        ['transferValue', 'value'],
+        ['asc', 'asc']
+      );
+      break;
+    case '差到优':
+      pageData[obj.targetKey].data = _.orderBy(
+        pageData[obj.targetKey].data,
+        ['transferValue', 'value'],
+        ['desc', 'desc']
+      );
+      break;
+  }
+};
 </script>
 
 <template>
@@ -109,11 +137,17 @@ const linkList = [
       <div class="card-container">
         <div class="left-box">
           <div class="card-box">
-            <bar-item :obj="pageData.data1"></bar-item>
+            <bar-item :obj="pageData.data1" @changeSort="changeSort"></bar-item>
           </div>
           <div class="card-box">
             <h2>列车兑现情况</h2>
             <condition-item></condition-item>
+          </div>
+        </div>
+        <div class="center-box">
+          <div class="card-box card-box2">
+            <instrumentPanelVue :obj="pageData.data1"></instrumentPanelVue>
+            <img class="demo-img" src="../assets/subway2.jpg" alt="" />
           </div>
         </div>
         <div class="right-box">
@@ -151,12 +185,20 @@ const linkList = [
 .link-text {
   text-decoration: underline;
 }
+.demo-img {
+  width: 600px;
+  display: block;
+  margin: 16px auto;
+}
 .card-container {
   display: flex;
   padding: 0 15px;
   width: 100%;
   box-sizing: border-box;
   .left-box {
+    flex: 3;
+  }
+  .center-box {
     flex: 3;
   }
   .right-box {
@@ -181,6 +223,9 @@ const linkList = [
       background-color: #20232f;
       // font-family: Arial, Helvetica, sans-serif;
     }
+  }
+  .card-box2 {
+    height: 900px;
   }
   .middle-box-2 {
     height: 920px;

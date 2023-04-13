@@ -333,12 +333,12 @@ const linkList = [
   box-sizing: border-box;
 }
 :deep(.el-input__wrapper) {
-  background-color: #20232f;
+  background-color: #7598eb57 !important;
   box-shadow: none;
   border: 1px solid #6e7283;
 }
 :deep(.el-input__inner) {
-  color: #6e7283 !important;
+  color: #fff !important;
 }
 :deep(.el-input .el-select__caret.el-icon) {
   color: #6e7283;

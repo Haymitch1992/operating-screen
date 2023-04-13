@@ -8,7 +8,7 @@ import barItem from '../components/barItem14.vue';
 import synthesize from '../components/synthesize.vue';
 import { useRouter } from 'vue-router';
 import { mainStore } from '../store/index';
-
+import linkItem from '../components/pageItem/link-item.vue';
 const store = mainStore();
 
 const pageData: PageData = reactive({
@@ -611,12 +611,20 @@ const changeData = () => {
 };
 
 onMounted(() => {});
+const linkList = [
+  {
+    name: '综合运营指数',
+    link: '/homeOperation',
+  },
+];
 </script>
 
 <template>
   <div class="container">
     <top :topObj="pageData" :link="pageData.linkData" v-if="false"></top>
+
     <div class="content-box">
+      <linkItem :obj="linkList"></linkItem>
       <!-- 综合信息栏 -->
       <div class="card-container">
         <div
@@ -695,6 +703,9 @@ onMounted(() => {});
   position: relative;
   text-decoration: underline;
 }
+.content-box {
+  padding: 10px 0 0;
+}
 h2 {
   position: relative;
 }
@@ -748,7 +759,7 @@ h2 {
   grid-gap: 20px 20px;
   width: 1880px;
   height: 920px;
-  padding: 20px;
+  padding: 0px 20px;
   .aa {
     grid-area: aa;
   }
@@ -803,12 +814,12 @@ h2 {
   // left: 114px;
 }
 :deep(.el-input__wrapper) {
-  background-color: #20232f;
+  background-color: #7598eb57 !important;
   box-shadow: none;
   border: 1px solid #6e7283;
 }
 :deep(.el-input__inner) {
-  color: #6e7283 !important;
+  color: #fff !important;
 }
 :deep(.el-input .el-select__caret.el-icon) {
   color: #6e7283;
