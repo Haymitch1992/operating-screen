@@ -1,5 +1,4 @@
 <!-- 矩阵图 -->
-Pocket 2
 <!-- 仪表盘组件 -->
 <script setup lang="ts">
 import { reactive, ref, onMounted, getCurrentInstance } from 'vue';
