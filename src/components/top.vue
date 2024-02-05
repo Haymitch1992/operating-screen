@@ -124,7 +124,7 @@ const openDrawer = () => {
       width: 24px;
       height: 24px;
       text-align: center;
-      background-color: #1969FF;
+      background-color: #1969ff;
       color: #fff;
       display: inline-block;
       border-radius: 4px;

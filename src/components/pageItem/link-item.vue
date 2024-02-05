@@ -141,11 +141,11 @@ const deleteItem = (index: number, str: string) => {
 
 <template>
   <div class="container" id="draw">
-    <el-breadcrumb>
+    <!-- <el-breadcrumb>
       <el-breadcrumb-item :to="{ path: item.link }" v-for="item in props.obj">{{
         item.name
       }}</el-breadcrumb-item>
-    </el-breadcrumb>
+    </el-breadcrumb> -->
     <el-button size="small" type="text" class="float-btn" @click="drawer = true"
       >参数配置</el-button
     >

@@ -1,11 +1,11 @@
 <!-- 仪表盘和柱状图的组合 -->
 <script setup lang="ts">
 import { reactive, ref, onMounted, watch, getCurrentInstance } from 'vue';
-import instrumentPanelVue from './instrument-panel-sm.vue';
+import instrumentPanelVue from './instrument-panel-large.vue';
 import { useRouter } from 'vue-router';
 import * as echarts from 'echarts';
-
-import bar from './bar.vue';
+import dayjs from 'dayjs';
+import bar from './bar-large.vue';
 const lineData = reactive({});
 
 const props = defineProps({
@@ -15,6 +15,10 @@ const props = defineProps({
   },
 });
 
+onMounted(() => {
+  handleClickData('今日');
+});
+const value1: any = ref([]);
 const options = [
   {
     value: '名称正序',
@@ -42,11 +46,11 @@ const itemData = reactive({
   obj: props.obj.data,
 });
 
-const emit = defineEmits<{
-  (event: 'changeSort', obj: object): void;
-}>();
+// const emit = defineEmits<{
+//   (event: 'changeSort', obj: object): void;
+// }>();
 
-
+const emit = defineEmits(['changeSort', 'change']);
 
 watch(
   () => itemData.sort,
@@ -78,6 +82,34 @@ const setIconColor = (value: string) => {
 const handleSelect = (str: string) => {
   router.push(str);
 };
+
+const handleClickData = (str: string) => {
+  let start: any = '';
+  let end: any = '';
+  switch (str) {
+    case '今日':
+      start = dayjs().add(-1, 'day').format('YYYY-MM-DD');
+      end = dayjs().add(-1, 'day').format('YYYY-MM-DD');
+      break;
+    case '本周':
+      start = dayjs().startOf('week').add(1, 'day').format('YYYY-MM-DD');
+      end = dayjs().endOf('week').add(1, 'day').format('YYYY-MM-DD');
+      break;
+    case '本月':
+      start = dayjs().startOf('month').format('YYYY-MM-DD');
+      end = dayjs().endOf('month').format('YYYY-MM-DD');
+      break;
+    case '本年':
+      start = dayjs().startOf('year').format('YYYY-MM-DD');
+      end = dayjs().endOf('year').format('YYYY-MM-DD');
+      break;
+  }
+  value1.value = [start, end];
+  emit('change', props.obj.indexName);
+};
+const pickerChange = () => {
+  emit('change', props.obj.indexName);
+};
 </script>
 
 <template>
@@ -88,24 +120,43 @@ const handleSelect = (str: string) => {
       :class="props.obj.linkPage ? 'active' : ''"
     >
       {{ props.obj.indexName }}
-      <span
+      <!-- <span
         class="icon"
         :style="{
           background: setIconColor(props.obj.rank),
         }"
         >{{ props.obj.rank }}</span
-      >
+      > -->
     </h2>
     <div>
       <div class="bar-top-item">
         <div class="left">
           <!-- {{ props.obj }} -->
-          <div class="left">
-            <instrumentPanelVue :obj="props.obj"></instrumentPanelVue>
+          <div class="left date-line">
+            <el-date-picker
+              v-model="value1"
+              type="daterange"
+              start-placeholder="起始时间"
+              end-placeholder="结束时间"
+              @change="pickerChange"
+            ></el-date-picker>
+            <el-button size="small" @click="handleClickData('今日')"
+              >前一日</el-button
+            >
+            <el-button size="small" @click="handleClickData('本周')"
+              >本周</el-button
+            >
+            <el-button size="small" @click="handleClickData('本月')"
+              >本月</el-button
+            >
+            <el-button size="small" @click="handleClickData('本年')"
+              >本年</el-button
+            >
+            <!-- <instrumentPanelVue :obj="props.obj"></instrumentPanelVue> -->
           </div>
           <!-- <p>全网平均满载率30</p> -->
           <div class="right">
-            <el-select
+            <!-- <el-select
               v-model="itemData.sort"
               class="m-2"
               placeholder="Select"
@@ -117,7 +168,7 @@ const handleSelect = (str: string) => {
                 :label="item.label"
                 :value="item.value"
               />
-            </el-select>
+            </el-select> -->
           </div>
         </div>
       </div>
@@ -129,6 +180,13 @@ const handleSelect = (str: string) => {
 </template>
 
 <style lang="less" scoped>
+.date-line {
+  padding-top: 20px;
+  padding-left: 10px;
+  button {
+    margin-left: 10px;
+  }
+}
 h2 {
   padding: 0 0 0 20px;
   margin: 0;
@@ -203,7 +261,7 @@ h2 {
   .right {
     flex: 4;
     text-align: right;
-    height: 120px;
+    height: 220px;
     position: absolute;
     top: 0;
     right: 4px;
@@ -222,4 +280,3 @@ h2 {
   color: #6e7283;
 }
 </style>
-

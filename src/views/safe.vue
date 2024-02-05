@@ -116,7 +116,6 @@ const pageData: any = reactive({
     unit: 'number',
     unitCn: '件',
     fixed: 1,
-
     data: [],
     original: [],
   },
